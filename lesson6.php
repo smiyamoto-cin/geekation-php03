@@ -19,6 +19,8 @@ $arr = [
     'r2' => ['c1' => 7, 'c2' => 8, 'c3' => 12],
     'r3' => ['c1' => 25, 'c2' => 9, 'c3' => 130]
 ];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -29,13 +31,55 @@ $arr = [
 table {
     border:1px solid #000;
     border-collapse: collapse;
+    text-align: right;
 }
 th, td {
     border:1px solid #000;
+    text-align: right;
 }
 </style>
 </head>
 <body>
     <!-- ここにテーブル表示 -->
+    <table>
+        <?php
+        //ヘッダー
+            echo "<tr> <th>&nbsp;</th>";
+            foreach ($arr['r1'] as $key =>$value) {
+                echo "<th> $key </th>";
+            }
+            echo "<th>横合計</th></tr>";
+        //データ行
+        $rows = count($arr);
+        $cols = count($arr['r1']);
+        $totals = 0; // 初期化
+        
+            for($i=1; $i <=$rows; $i++){
+                $sum = 0; // 行の合計値
+                echo "<tr><td>r$i</td>"; 
+                foreach ($arr["r{$i}"] as $value) {
+                    echo "<td>$value</td>";
+                    $sum += $value;
+                    } 
+                    $totals +=$sum;
+                echo"<td>$sum</td></tr>";
+            }
+            
+        //縦合計の列
+            echo "<tr><td>縦合計</td>";
+
+            $colsSum = array('c1'=> '0','c2'=>'0','c3'=>'0'); //列の合計
+
+            for($j=1; $j <=$cols; $j++){ //ex) 1周目(c1の列の時)
+                
+                for($k=1; $k <=$rows; $k++){
+                    $colsSum["c{$j}"] += $arr["r{$k}"]["c{$j}"];
+                }
+                echo "<td>{$colsSum["c{$j}"]}</td>";
+            }
+                echo"<td>$totals</td>";
+            
+                echo"</tr>";
+        ?>
 </body>
 </html>
